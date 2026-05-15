@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TravelNest – Explore destinations around the world" />
+  <meta name="theme-color" content="#1a6b5e" />
+  <title>Destinations – TravelNest</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        TravelNest
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="planner.html">Planner</a>
+        <a href="mood.html">Mood</a>
+        <a href="feedback.html">Feedback</a>
+        <a href="planner.html" class="nav-cta">Plan Trip</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <span class="header-eyebrow">Explore the World</span>
+    <h1>Destination Explorer</h1>
+    <p>Search, filter, and discover extraordinary places across every continent.</p>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="section-container">
+
+      <!-- FILTER BAR -->
+      <div class="filter-bar" role="search">
+        <div class="filter-search">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="Search destinations…"
+            aria-label="Search destinations"
+            autocomplete="off"
+          />
+        </div>
+
+        <select id="continentFilter" class="filter-select" aria-label="Filter by continent">
+          <option value="">All Continents</option>
+          <option value="Africa">Africa</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="North America">North America</option>
+          <option value="Oceania">Oceania</option>
+          <option value="South America">South America</option>
+        </select>
+
+        <select id="typeFilter" class="filter-select" aria-label="Filter by travel type">
+          <option value="">All Types</option>
+          <option value="beach">Beach</option>
+          <option value="cultural">Cultural</option>
+          <option value="adventure">Adventure</option>
+          <option value="nature">Nature</option>
+          <option value="city">City</option>
+          <option value="romantic">Romantic</option>
+        </select>
+
+        <span class="filter-count" id="filterCount" aria-live="polite"></span>
+      </div>
+
+      <!-- DESTINATION CARDS -->
+      <div class="dest-grid" id="destGrid" role="list" aria-label="Destination cards"></div>
+
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Destination</h2>
+        <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-hero-img" id="modalImg" role="img"></div>
+      <div class="modal-body">
+        <div class="modal-meta" id="modalMeta"></div>
+        <p class="modal-section-title">✦ About</p>
+        <p class="modal-description" id="modalDesc"></p>
+        <p class="modal-section-title">📍 Top Attractions</p>
+        <ul class="attractions-list" id="modalAttractions"></ul>
+        <p class="modal-section-title">💰 Travel Cost Comparison</p>
+        <table class="cost-table" id="modalCostTable">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th class="col-budget">Budget</th>
+              <th class="col-mod">Moderate</th>
+              <th class="col-luxury">Luxury</th>
+            </tr>
+          </thead>
+          <tbody id="modalCostBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-simple">
+    <p><a href="index.html">✈ TravelNest</a> &nbsp;·&nbsp; © <span id="year"></span> All rights reserved.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/destinations.js"></script>
+</body>
+</html>

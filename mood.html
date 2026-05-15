@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TravelNest – Travel Mood: ambient sounds and destination tracker" />
+  <meta name="theme-color" content="#1a6b5e" />
+  <title>Travel Mood – TravelNest</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        TravelNest
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="planner.html">Planner</a>
+        <a href="mood.html">Mood</a>
+        <a href="feedback.html">Feedback</a>
+        <a href="planner.html" class="nav-cta">Plan Trip</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <span class="header-eyebrow">Find Your Vibe</span>
+    <h1>Travel Mood</h1>
+    <p>Set the atmosphere with ambient sounds and track your travel journey.</p>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="section-container">
+      <div class="mood-grid">
+
+        <!-- ── AMBIENT SOUND PLAYER ── -->
+        <div class="mood-card">
+          <h2>🎧 Ambient Soundscapes</h2>
+          <p class="card-sub">Close your eyes and let the sounds transport you. Generated in real-time — no downloads needed.</p>
+
+          <div class="sound-buttons" role="group" aria-label="Ambient sound controls">
+
+            <button class="sound-btn" id="sndBeach" data-sound="beach" aria-pressed="false">
+              <span class="sound-icon" aria-hidden="true">🌊</span>
+              <span class="sound-text">
+                <span class="sb-name">Ocean Waves</span>
+                <span class="sb-desc">Rolling surf and sea breeze</span>
+              </span>
+              <span class="waveform" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </span>
+            </button>
+
+            <button class="sound-btn" id="sndForest" data-sound="forest" aria-pressed="false">
+              <span class="sound-icon" aria-hidden="true">🌲</span>
+              <span class="sound-text">
+                <span class="sb-name">Forest & Birds</span>
+                <span class="sb-desc">Rustling leaves and birdsong</span>
+              </span>
+              <span class="waveform" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </span>
+            </button>
+
+            <button class="sound-btn" id="sndCity" data-sound="city" aria-pressed="false">
+              <span class="sound-icon" aria-hidden="true">🏙️</span>
+              <span class="sound-text">
+                <span class="sb-name">City Ambience</span>
+                <span class="sb-desc">Urban hum and distant traffic</span>
+              </span>
+              <span class="waveform" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </span>
+            </button>
+
+          </div>
+
+          <!-- Volume control -->
+          <div class="volume-row">
+            <label for="volSlider">Volume</label>
+            <input type="range" id="volSlider" min="0" max="100" value="50" aria-label="Volume" />
+            <span class="volume-val" id="volVal">50%</span>
+          </div>
+
+          <!-- Audio permission notice -->
+          <p id="audioNotice" style="margin-top:1rem;font-size:.8rem;color:var(--text-light);display:none;">
+            🔒 Click any sound button to unlock audio — browsers require a user gesture.
+          </p>
+        </div>
+
+        <!-- ── DESTINATION TRACKER ── -->
+        <div class="mood-card">
+          <h2>🗺️ Destination Tracker</h2>
+          <p class="card-sub">Mark destinations as Visited or Planned. Your progress is saved automatically.</p>
+
+          <div class="tracker-tabs" role="group" aria-label="Filter tracker">
+            <button class="tracker-tab active" data-filter="all">All</button>
+            <button class="tracker-tab" data-filter="visited">✓ Visited</button>
+            <button class="tracker-tab" data-filter="planned">📌 Planned</button>
+          </div>
+
+          <ul class="tracker-list" id="trackerList" aria-label="Destinations to track"></ul>
+
+          <div class="tracker-stats" aria-live="polite">
+            <div class="stat-item">
+              <span class="stat-val" id="statVisited">0</span>
+              <span class="stat-lbl">Visited</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val" id="statPlanned">0</span>
+              <span class="stat-lbl">Planned</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-val" id="statPct">0%</span>
+              <span class="stat-lbl">Explored</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-simple">
+    <p><a href="index.html">✈ TravelNest</a> &nbsp;·&nbsp; © <span id="year"></span> All rights reserved.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/mood.js"></script>
+</body>
+</html>

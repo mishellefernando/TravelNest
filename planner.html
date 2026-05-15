@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TravelNest – Budget Planner & Random Trip Generator" />
+  <meta name="theme-color" content="#1a6b5e" />
+  <title>Planner – TravelNest</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        TravelNest
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="planner.html">Planner</a>
+        <a href="mood.html">Mood</a>
+        <a href="feedback.html">Feedback</a>
+        <a href="planner.html" class="nav-cta">Plan Trip</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <span class="header-eyebrow">Plan Smarter</span>
+    <h1>Trip Planner</h1>
+    <p>Calculate your budget, discover random destinations, and build your wishlist.</p>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="section-container">
+      <div class="planner-grid">
+
+        <!-- ── BUDGET PLANNER ── -->
+        <div class="planner-card">
+          <h2>🧮 Budget Planner</h2>
+
+          <form id="budgetForm" novalidate>
+            <div class="form-group">
+              <label for="bpDestination">Destination</label>
+              <select id="bpDestination" required>
+                <option value="">— Choose a destination —</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="bpDays">Number of Days</label>
+              <input type="number" id="bpDays" min="1" max="365" placeholder="e.g. 7" required />
+            </div>
+
+            <div class="form-group">
+              <label for="bpBudget">Daily Budget per Person (USD)</label>
+              <input type="number" id="bpBudget" min="1" max="10000" placeholder="e.g. 150" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%">Calculate Trip Cost</button>
+          </form>
+
+          <!-- Result panel -->
+          <div class="budget-result" id="budgetResult" aria-live="polite">
+            <div class="budget-total" id="bpTotal"></div>
+            <div class="budget-sub" id="bpSub"></div>
+            <div class="status-badge" id="bpStatus"></div>
+            <div class="progress-wrap">
+              <div class="progress-fill" id="bpBar"></div>
+            </div>
+            <div class="progress-labels">
+              <span>Budget</span>
+              <span>Moderate</span>
+              <span>Luxury</span>
+            </div>
+            <button class="btn btn-outline" id="bpSave" style="margin-top:1rem;border-color:var(--teal);color:var(--teal);width:100%">
+              💾 Save Plan
+            </button>
+          </div>
+
+          <!-- Saved plans -->
+          <div class="saved-plans" id="savedPlansWrap" style="display:none">
+            <div class="saved-plans-title">Saved Plans</div>
+            <div id="savedPlansList"></div>
+          </div>
+        </div>
+
+        <!-- ── RANDOM GENERATOR + WISHLIST ── -->
+        <div class="planner-card">
+          <h2>🎲 Random Trip Generator</h2>
+
+          <div class="form-group">
+            <label for="genType">Travel Type</label>
+            <select id="genType">
+              <option value="">Any Type</option>
+              <option value="beach">🏖️ Beach</option>
+              <option value="adventure">🧗 Adventure</option>
+              <option value="cultural">🏛️ Cultural</option>
+              <option value="nature">🌿 Nature</option>
+              <option value="city">🌆 City</option>
+              <option value="romantic">💕 Romantic</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="genBudget">Budget Range (per day, USD)</label>
+            <select id="genBudget">
+              <option value="">Any Budget</option>
+              <option value="budget">💚 Budget · Under $100/day</option>
+              <option value="moderate">💛 Moderate · $100–$300/day</option>
+              <option value="luxury">💜 Luxury · $300+/day</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" id="genBtn" style="width:100%">✨ Surprise Me!</button>
+
+          <!-- Generator result -->
+          <div class="gen-result" id="genResult">
+            <div class="gen-result-img" id="genImg"></div>
+            <div class="gen-result-body">
+              <h3 id="genName"></h3>
+              <p class="gen-country" id="genCountry"></p>
+              <p class="gen-excerpt" id="genExcerpt"></p>
+              <div class="gen-result-actions">
+                <button class="btn btn-sm btn-ghost" id="genAgain">🎲 Again</button>
+                <button class="btn btn-sm btn-gold" id="genSave">♡ Wishlist</button>
+                <a href="destinations.html" class="btn btn-sm btn-primary">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wishlist -->
+          <div class="wishlist-wrap">
+            <h3>♡ My Wishlist</h3>
+            <ul class="wishlist-list" id="wishlistList"></ul>
+            <p class="wishlist-empty" id="wishlistEmpty">No destinations saved yet.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-simple">
+    <p><a href="index.html">✈ TravelNest</a> &nbsp;·&nbsp; © <span id="year"></span> All rights reserved.</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/planner.js"></script>
+</body>
+</html>

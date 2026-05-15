@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TravelNest – Discover your next adventure" />
+  <meta name="theme-color" content="#1a6b5e" />
+  <title>TravelNest – Find Your Next Adventure</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon">✈</span>
+        TravelNest
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="destinations.html">Destinations</a>
+        <a href="planner.html">Planner</a>
+        <a href="mood.html">Mood</a>
+        <a href="feedback.html">Feedback</a>
+        <a href="planner.html" class="nav-cta">Plan Trip</a>
+      </nav>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <span class="hero-eyebrow">Travel the World</span>
+        <h1 class="hero-heading">
+          <span id="quoteText">The world is a book,<br />and those who do not travel<br />read only one page.</span>
+        </h1>
+        <p class="hero-author" id="quoteAuthor">— Saint Augustine</p>
+        <div class="quote-dots" id="quoteDots" aria-hidden="true"></div>
+        <div class="hero-actions">
+          <a href="#destinations" class="btn btn-primary">Explore Destinations</a>
+          <a href="#deals" class="btn btn-outline">View Deals</a>
+        </div>
+      </div>
+
+      <div class="hero-image-wrap">
+        <div class="hero-image" role="img" aria-label="Beautiful travel destination">
+          <div class="image-overlay"></div>
+          <div class="floating-card">
+            <span class="card-flag">📍</span>
+            <div>
+              <p class="card-dest" id="dotdDestName">Loading…</p>
+              <p class="card-label">Destination of the Day</p>
+            </div>
+            <div class="card-temp" id="dotdRating">★ 4.9</div>
+          </div>
+        </div>
+        <div class="hero-blob"></div>
+      </div>
+    </section>
+
+    <!-- DESTINATION OF THE DAY -->
+    <section class="dotd-section" id="destinations">
+      <div class="section-container">
+        <span class="section-eyebrow">Destination of the Day</span>
+        <h2 class="section-title" id="dotdTitle">Today's Pick</h2>
+        <p class="section-sub" id="dotdDescription">Refreshes every day with a handpicked destination.</p>
+
+        <div class="dotd-grid" id="dotdGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCES STRIP -->
+    <section class="experiences" id="experiences">
+      <div class="section-container">
+        <span class="section-eyebrow">What We Offer</span>
+        <h2 class="section-title">Unforgettable Experiences</h2>
+        <div class="exp-grid">
+          <div class="exp-card">
+            <span class="exp-icon">🏖️</span>
+            <h3>Beach Escapes</h3>
+            <p>Pristine shores and turquoise waters curated for pure relaxation.</p>
+          </div>
+          <div class="exp-card">
+            <span class="exp-icon">🏔️</span>
+            <h3>Mountain Treks</h3>
+            <p>From the Alps to the Himalayas — routes for every fitness level.</p>
+          </div>
+          <div class="exp-card">
+            <span class="exp-icon">🏛️</span>
+            <h3>Cultural Tours</h3>
+            <p>Immerse yourself in history, art, and local traditions worldwide.</p>
+          </div>
+          <div class="exp-card">
+            <span class="exp-icon">🍜</span>
+            <h3>Food Journeys</h3>
+            <p>Follow your palate through the world's most vibrant food scenes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEALS -->
+    <section class="deals" id="deals">
+      <div class="section-container">
+        <span class="section-eyebrow">Limited Time</span>
+        <h2 class="section-title">Hot Deals</h2>
+        <div class="deals-grid">
+          <article class="deal-card">
+            <div class="deal-badge">-30%</div>
+            <div class="deal-image deal-image--paris"></div>
+            <div class="deal-body">
+              <h3>Paris, France</h3>
+              <p>7 nights · All-inclusive</p>
+              <span class="deal-price">From $1,299</span>
+            </div>
+          </article>
+          <article class="deal-card">
+            <div class="deal-badge">-25%</div>
+            <div class="deal-image deal-image--bali"></div>
+            <div class="deal-body">
+              <h3>Bali, Indonesia</h3>
+              <p>10 nights · Half-board</p>
+              <span class="deal-price">From $899</span>
+            </div>
+          </article>
+          <article class="deal-card">
+            <div class="deal-badge">-40%</div>
+            <div class="deal-image deal-image--nyc"></div>
+            <div class="deal-body">
+              <h3>New York, USA</h3>
+              <p>5 nights · Breakfast only</p>
+              <span class="deal-price">From $749</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER / NEWSLETTER -->
+  <footer class="footer" id="contact">
+    <div class="footer-top">
+      <div class="newsletter">
+        <h2>Stay Inspired</h2>
+        <p>Get weekly travel ideas, exclusive deals, and destination guides.</p>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <div class="newsletter-input-wrap">
+            <input
+              type="email"
+              id="emailInput"
+              name="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+              aria-label="Email address"
+            />
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </div>
+          <p class="newsletter-msg" id="newsletterMsg" role="alert" aria-live="polite"></p>
+          <p class="newsletter-count" id="subscriberCount"></p>
+        </form>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#destinations">Destinations</a>
+          <a href="#experiences">Experiences</a>
+          <a href="#deals">Deals</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#about">About Us</a>
+          <a href="#contact">Contact</a>
+          <a href="#">Careers</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-logo"><span>✈</span> TravelNest</p>
+      <p class="footer-copy">© <span id="year"></span> TravelNest. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
