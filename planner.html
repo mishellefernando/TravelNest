@@ -18,7 +18,7 @@
   <header class="navbar" id="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
-        <span class="logo-icon">✈</span>
+        <span class="logo-icon"></span>
         TravelNest
       </a>
       <nav class="nav-links" id="navLinks" aria-label="Main navigation">
@@ -51,7 +51,7 @@
 
         <!-- ── BUDGET PLANNER ── -->
         <div class="planner-card">
-          <h2>🧮 Budget Planner</h2>
+          <h2>Budget Planner</h2>
 
           <form id="budgetForm" novalidate>
             <div class="form-group">
@@ -88,7 +88,7 @@
               <span>Luxury</span>
             </div>
             <button class="btn btn-outline" id="bpSave" style="margin-top:1rem;border-color:var(--teal);color:var(--teal);width:100%">
-              💾 Save Plan
+              Save Plan
             </button>
           </div>
 
@@ -101,18 +101,18 @@
 
         <!-- ── RANDOM GENERATOR + WISHLIST ── -->
         <div class="planner-card">
-          <h2>🎲 Random Trip Generator</h2>
+          <h2>Random Trip Generator</h2>
 
           <div class="form-group">
             <label for="genType">Travel Type</label>
             <select id="genType">
               <option value="">Any Type</option>
-              <option value="beach">🏖️ Beach</option>
-              <option value="adventure">🧗 Adventure</option>
-              <option value="cultural">🏛️ Cultural</option>
-              <option value="nature">🌿 Nature</option>
-              <option value="city">🌆 City</option>
-              <option value="romantic">💕 Romantic</option>
+              <option value="beach">Beach</option>
+              <option value="adventure">Adventure</option>
+              <option value="cultural">Cultural</option>
+              <option value="nature">Nature</option>
+              <option value="city">City</option>
+              <option value="romantic">Romantic</option>
             </select>
           </div>
 
@@ -120,13 +120,13 @@
             <label for="genBudget">Budget Range (per day, USD)</label>
             <select id="genBudget">
               <option value="">Any Budget</option>
-              <option value="budget">💚 Budget · Under $100/day</option>
-              <option value="moderate">💛 Moderate · $100–$300/day</option>
-              <option value="luxury">💜 Luxury · $300+/day</option>
+              <option value="budget">Budget · Under $100/day</option>
+              <option value="moderate">Moderate · $100–$300/day</option>
+              <option value="luxury">Luxury · $300+/day</option>
             </select>
           </div>
 
-          <button class="btn btn-primary" id="genBtn" style="width:100%">✨ Surprise Me!</button>
+          <button class="btn btn-primary" id="genBtn" style="width:100%">Surprise Me!</button>
 
           <!-- Generator result -->
           <div class="gen-result" id="genResult">
@@ -136,8 +136,8 @@
               <p class="gen-country" id="genCountry"></p>
               <p class="gen-excerpt" id="genExcerpt"></p>
               <div class="gen-result-actions">
-                <button class="btn btn-sm btn-ghost" id="genAgain">🎲 Again</button>
-                <button class="btn btn-sm btn-gold" id="genSave">♡ Wishlist</button>
+                <button class="btn btn-sm btn-ghost" id="genAgain">Again</button>
+                <button class="btn btn-sm btn-gold" id="genSave">Wishlist</button>
                 <a href="destinations.html" class="btn btn-sm btn-primary">View Details</a>
               </div>
             </div>
@@ -145,7 +145,7 @@
 
           <!-- Wishlist -->
           <div class="wishlist-wrap">
-            <h3>♡ My Wishlist</h3>
+            <h3>My Wishlist</h3>
             <ul class="wishlist-list" id="wishlistList"></ul>
             <p class="wishlist-empty" id="wishlistEmpty">No destinations saved yet.</p>
           </div>
@@ -157,7 +157,7 @@
 
   <!-- FOOTER -->
   <footer class="footer-simple">
-    <p><a href="index.html">✈ TravelNest</a> &nbsp;·&nbsp; © <span id="year"></span> All rights reserved.</p>
+    <p><a href="index.html">TravelNest</a> &nbsp;·&nbsp; © <span id="year"></span> All rights reserved.</p>
   </footer>
 
   <script src="js/data.js"></script>
