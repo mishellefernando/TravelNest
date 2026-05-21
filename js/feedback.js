@@ -3,135 +3,239 @@
    ============================================================ */
 'use strict';
 
-const FB_KEY = 'tn_feedback';
+let FB_KEY = 'tn_feedback';
+let form = document.getElementById('feedbackForm');
+let successMessage = document.getElementById('formSuccess');
+let submissionCount = document.getElementById('submissionCount');
 
-/* ============================================================
-   FORM VALIDATION
-   ============================================================ */
-const form     = document.getElementById('feedbackForm');
-const success  = document.getElementById('formSuccess');
-const countEl  = document.getElementById('submissionCount');
-
-const rules = {
+let validationRules = {
   fbName: {
-    fg: 'fg-name', err: 'err-name',
-    validate(v) {
-      if (!v.trim()) return 'Name is required.';
-      if (v.trim().length < 2) return 'Name must be at least 2 characters.';
-      if (!/^[a-zA-Z\s'-]+$/.test(v.trim())) return 'Name can only contain letters, spaces, hyphens, and apostrophes.';
+    fg: 'fg-name',
+    err: 'err-name',
+    validate: function (value) {
+      let trimmed = value.trim();
+
+      if (trimmed === '') {
+        return 'Name is required.';
+      }
+      if (trimmed.length < 2) {
+        return 'Name must be at least 2 characters.';
+      }
+      if (!/^[a-zA-Z\s'-]+$/.test(trimmed)) {
+        return 'Name can only contain letters, spaces, hyphens, and apostrophes.';
+      }
       return null;
     },
   },
   fbEmail: {
-    fg: 'fg-email', err: 'err-email',
-    validate(v) {
-      if (!v.trim()) return 'Email is required.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())) return 'Please enter a valid email address (e.g. jane@example.com).';
+    fg: 'fg-email',
+    err: 'err-email',
+    validate: function (value) {
+      let trimmed = value.trim();
+
+      if (trimmed === '') {
+        return 'Email is required.';
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed)) {
+        return 'Please enter a valid email address (e.g. jane@example.com).';
+      }
       return null;
     },
   },
   fbSubject: {
-    fg: 'fg-subject', err: 'err-subject',
-    validate(v) {
-      if (!v) return 'Please select a topic.';
+    fg: 'fg-subject',
+    err: 'err-subject',
+    validate: function (value) {
+      if (value === '' || value === null) {
+        return 'Please select a topic.';
+      }
       return null;
     },
   },
   fbMessage: {
-    fg: 'fg-message', err: 'err-message',
-    validate(v) {
-      if (!v.trim()) return 'Message is required.';
-      if (v.trim().length < 20) return `Message must be at least 20 characters (${v.trim().length}/20).`;
-      if (v.trim().length > 2000) return 'Message must not exceed 2000 characters.';
+    fg: 'fg-message',
+    err: 'err-message',
+    validate: function (value) {
+      let trimmed = value.trim();
+
+      if (trimmed === '') {
+        return 'Message is required.';
+      }
+      if (trimmed.length < 20) {
+        return 'Message must be at least 20 characters (' + trimmed.length + '/20).';
+      }
+      if (trimmed.length > 2000) {
+        return 'Message must not exceed 2000 characters.';
+      }
       return null;
     },
   },
 };
 
+function getElement(id) {
+  return document.getElementById(id);
+}
+
 function clearFieldState(fieldId) {
-  const rule  = rules[fieldId];
-  const fg    = document.getElementById(rule.fg);
-  const errEl = document.getElementById(rule.err);
-  fg.classList.remove('has-error', 'is-valid');
-  errEl.textContent = '';
+  let rule = validationRules[fieldId];
+  let fieldGroup = getElement(rule.fg);
+  let errorElement = getElement(rule.err);
+
+  if (fieldGroup) {
+    fieldGroup.classList.remove('has-error');
+    fieldGroup.classList.remove('is-valid');
+  }
+
+  if (errorElement) {
+    errorElement.textContent = '';
+  }
 }
 
 function validateField(fieldId) {
-  const rule   = rules[fieldId];
-  const field  = document.getElementById(fieldId);
-  const fg     = document.getElementById(rule.fg);
-  const errEl  = document.getElementById(rule.err);
-  const error  = rule.validate(field.value);
+  let rule = validationRules[fieldId];
+  let field = getElement(fieldId);
+  let fieldGroup = getElement(rule.fg);
+  let errorElement = getElement(rule.err);
+  let errorMessage = rule.validate(field.value);
 
-  fg.classList.toggle('has-error', !!error);
-  fg.classList.toggle('is-valid',  !error);
-  errEl.textContent = error || '';
-  return !error;
+  if (fieldGroup) {
+    if (errorMessage) {
+      fieldGroup.classList.add('has-error');
+      fieldGroup.classList.remove('is-valid');
+    } else {
+      fieldGroup.classList.remove('has-error');
+      fieldGroup.classList.add('is-valid');
+    }
+  }
+
+  if (errorElement) {
+    errorElement.textContent = errorMessage || '';
+  }
+
+  return !errorMessage;
 }
 
-// Live validation on blur
-Object.keys(rules).forEach(id => {
-  const field = document.getElementById(id);
-  field.addEventListener('blur', () => validateField(id));
-  field.addEventListener('input', () => {
-    if (document.getElementById(rules[id].fg).classList.contains('has-error')) {
-      validateField(id);
+function addValidationListeners() {
+  let fieldIds = Object.keys(validationRules);
+
+  for (let i = 0; i < fieldIds.length; i += 1) {
+    let fieldId = fieldIds[i];
+    let field = getElement(fieldId);
+
+    if (!field) {
+      continue;
     }
-  });
-});
 
-// Submit
-form.addEventListener('submit', e => {
-  e.preventDefault();
+    field.addEventListener('blur', function (event) {
+      validateField(event.target.id);
+    });
 
-  const valid = Object.keys(rules).map(id => validateField(id)).every(Boolean);
-  if (!valid) {
-    const firstError = form.querySelector('.has-error input, .has-error select, .has-error textarea');
-    if (firstError) firstError.focus();
+    field.addEventListener('input', function (event) {
+      let id = event.target.id;
+      let fieldGroup = getElement(validationRules[id].fg);
+      if (fieldGroup && fieldGroup.classList.contains('has-error')) {
+        validateField(id);
+      }
+    });
+  }
+}
+
+function getSubmissions() {
+  try {
+    let saved = localStorage.getItem(FB_KEY);
+    return saved ? JSON.parse(saved) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function updateSubmissionCount() {
+  if (!submissionCount) {
     return;
   }
 
-  const entry = {
-    id:      Date.now(),
-    name:    document.getElementById('fbName').value.trim(),
-    email:   document.getElementById('fbEmail').value.trim(),
-    subject: document.getElementById('fbSubject').value,
-    message: document.getElementById('fbMessage').value.trim(),
-    date:    new Date().toISOString(),
+  let submissions = getSubmissions();
+  let count = submissions.length;
+
+  if (count === 0) {
+    submissionCount.textContent = '';
+    return;
+  }
+
+  let text = count + ' message';
+  if (count !== 1) {
+    text += 's';
+  }
+  text += ' submitted so far.';
+  submissionCount.textContent = text;
+}
+
+function showSuccessMessage() {
+  if (!form || !successMessage) {
+    return;
+  }
+
+  form.reset();
+
+  let fieldIds = Object.keys(validationRules);
+  for (let i = 0; i < fieldIds.length; i += 1) {
+    clearFieldState(fieldIds[i]);
+  }
+
+  successMessage.classList.add('visible');
+  updateSubmissionCount();
+  form.style.display = 'none';
+  successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function submitFeedback(event) {
+  event.preventDefault();
+
+  let fieldIds = Object.keys(validationRules);
+  let formIsValid = true;
+
+  for (let i = 0; i < fieldIds.length; i += 1) {
+    if (!validateField(fieldIds[i])) {
+      formIsValid = false;
+    }
+  }
+
+  if (!formIsValid) {
+    let firstError = form.querySelector('.has-error input, .has-error select, .has-error textarea');
+    if (firstError) {
+      firstError.focus();
+    }
+    return;
+  }
+
+  let entry = {
+    id: Date.now(),
+    name: getElement('fbName').value.trim(),
+    email: getElement('fbEmail').value.trim(),
+    subject: getElement('fbSubject').value,
+    message: getElement('fbMessage').value.trim(),
+    date: new Date().toISOString(),
   };
 
-  const all = getSubmissions();
-  all.unshift(entry);
-  localStorage.setItem(FB_KEY, JSON.stringify(all));
+  let submissions = getSubmissions();
+  submissions.unshift(entry);
+  localStorage.setItem(FB_KEY, JSON.stringify(submissions));
 
-  // Show success
-  form.reset();
-  Object.keys(rules).forEach(id => clearFieldState(id));
-  success.classList.add('visible');
-  updateCount();
-
-  form.style.display = 'none';
-  success.scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
-
-function getSubmissions() {
-  try { return JSON.parse(localStorage.getItem(FB_KEY)) || []; } catch { return []; }
+  showSuccessMessage();
 }
 
-function updateCount() {
-  const n = getSubmissions().length;
-  countEl.textContent = n > 0
-    ? `${n} message${n !== 1 ? 's' : ''} submitted so far.`
-    : '';
+if (form) {
+  addValidationListeners();
+  form.addEventListener('submit', submitFeedback);
 }
 
-updateCount();
+updateSubmissionCount();
 
 /* ============================================================
    FAQ ACCORDION
    Pure JS toggle — no CSS :checked hack
    ============================================================ */
-const FAQ_DATA = [
+let FAQ_DATA = [
   {
     q: 'How does the Destination of the Day work?',
     a: 'Each day, our algorithm picks a destination from our curated list based on the current date. The pick changes every midnight and stays consistent throughout the day regardless of your timezone.',
@@ -166,43 +270,48 @@ const FAQ_DATA = [
   },
 ];
 
-const faqList = document.getElementById('faqList');
+let faqList = document.getElementById('faqList');
 
-FAQ_DATA.forEach((item, i) => {
-  const li = document.createElement('li');
-  li.className = 'faq-item';
+if (faqList) {
+  for (let i = 0; i < FAQ_DATA.length; i += 1) {
+    let item = FAQ_DATA[i];
+    let li = document.createElement('li');
+    li.className = 'faq-item';
 
-  const btn = document.createElement('button');
-  btn.className = 'faq-question';
-  btn.id        = `faq-q-${i}`;
-  btn.setAttribute('aria-expanded', 'false');
-  btn.setAttribute('aria-controls', `faq-a-${i}`);
-  btn.innerHTML = `<span>${item.q}</span><span class="faq-icon" aria-hidden="true">+</span>`;
+    let button = document.createElement('button');
+    button.className = 'faq-question';
+    button.id = 'faq-q-' + i;
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', 'faq-a-' + i);
+    button.innerHTML = '<span>' + item.q + '</span><span class="faq-icon" aria-hidden="true">+</span>';
 
-  const answer = document.createElement('div');
-  answer.className = 'faq-answer';
-  answer.id        = `faq-a-${i}`;
-  answer.setAttribute('role', 'region');
-  answer.setAttribute('aria-labelledby', `faq-q-${i}`);
-  answer.textContent = item.a;
+    let answer = document.createElement('div');
+    answer.className = 'faq-answer';
+    answer.id = 'faq-a-' + i;
+    answer.setAttribute('role', 'region');
+    answer.setAttribute('aria-labelledby', 'faq-q-' + i);
+    answer.textContent = item.a;
 
-  btn.addEventListener('click', () => {
-    const isOpen = answer.classList.contains('open');
+    button.addEventListener('click', function () {
+      let openAnswer = this.nextElementSibling;
+      let isOpen = openAnswer.classList.contains('open');
+      let answers = faqList.querySelectorAll('.faq-answer.open');
 
-    // Close all others
-    faqList.querySelectorAll('.faq-answer.open').forEach(a => {
-      a.classList.remove('open');
-      a.previousElementSibling.setAttribute('aria-expanded', 'false');
+      for (let j = 0; j < answers.length; j += 1) {
+        answers[j].classList.remove('open');
+        if (answers[j].previousElementSibling) {
+          answers[j].previousElementSibling.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (!isOpen) {
+        openAnswer.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+      }
     });
 
-    // Toggle clicked
-    if (!isOpen) {
-      answer.classList.add('open');
-      btn.setAttribute('aria-expanded', 'true');
-    }
-  });
-
-  li.appendChild(btn);
-  li.appendChild(answer);
-  faqList.appendChild(li);
-});
+    li.appendChild(button);
+    li.appendChild(answer);
+    faqList.appendChild(li);
+  }
+}
