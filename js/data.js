@@ -1,6 +1,3 @@
-/* ============================================================
-   TravelNest – Shared destination data
-   ============================================================ */
 'use strict';
 
 const DESTINATIONS = [
@@ -83,7 +80,7 @@ const DESTINATIONS = [
     continent: 'North America',
     travelTypes: ['city', 'cultural', 'adventure'],
     budgetTier: 'luxury',
-    image: 'https://images.unsplash.com/photo-1485871981521-5b1fd3805ef8?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80',
     description: 'New York City is the city that never sleeps — a relentless engine of culture, commerce, and creativity. Spread across five boroughs and 302 square miles, it is home to 8.3 million people from every corner of the globe. From the neon spectacle of Times Square to the peaceful greenery of Central Park, from world-class museums to the hottest restaurants on the planet, NYC offers something for every type of traveller.',
     attractions: [
       'Central Park — 843 acres of greenery in the heart of Manhattan',
