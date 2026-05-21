@@ -1,39 +1,66 @@
-/* ============================================================
-   TravelNest – Shared navbar behaviour (all interior pages)
-   ============================================================ */
 'use strict';
 
-(function () {
-  const navbar    = document.getElementById('navbar');
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('navLinks');
+function initNavBar() {
+  let navbar = document.getElementById('navbar');
+  let hamburger = document.getElementById('hamburger');
+  let navLinks = document.getElementById('navLinks');
 
-  if (!navbar) return;
+  if (!navbar || !hamburger || !navLinks) {
+    return;
+  }
 
-  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 40);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  function updateNavStyle() {
+    let scrollPosition = window.scrollY;
+    let isScrolled = scrollPosition > 40;
+    navbar.classList.toggle('scrolled', isScrolled);
+  }
 
-  hamburger.addEventListener('click', () => {
-    const open = hamburger.classList.toggle('open');
-    navLinks.classList.toggle('open', open);
-    hamburger.setAttribute('aria-expanded', open);
-  });
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    navLinks.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
 
-  navLinks.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      navLinks.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-    })
-  );
+  function toggleMenu() {
+    let isOpen = hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  }
 
-  // Highlight current page in nav
-  const page = location.pathname.split('/').pop() || 'index.html';
-  navLinks.querySelectorAll('a[href]').forEach(a => {
-    if (a.getAttribute('href') === page) a.classList.add('nav-active');
-  });
+  function setActiveLink() {
+    let currentPage = window.location.pathname.split('/').pop();
+    if (!currentPage) {
+      currentPage = 'index.html';
+    }
 
-  const yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-})();
+    let links = navLinks.querySelectorAll('a[href]');
+    for (let i = 0; i < links.length; i += 1) {
+      let link = links[i];
+      if (link.getAttribute('href') === currentPage) {
+        link.classList.add('nav-active');
+      }
+    }
+  }
+
+  window.addEventListener('scroll', updateNavStyle, { passive: true });
+  updateNavStyle();
+
+  hamburger.addEventListener('click', toggleMenu);
+
+  let navItems = navLinks.querySelectorAll('a');
+  for (let i = 0; i < navItems.length; i += 1) {
+    navItems[i].addEventListener('click', closeMenu);
+  }
+
+  setActiveLink();
+}
+
+function setFooterYear() {
+  let yearEl = document.getElementById('year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+}
+
+initNavBar();
+setFooterYear();
