@@ -4,135 +4,196 @@
    ============================================================ */
 'use strict';
 
-const grid         = document.getElementById('destGrid');
-const searchInput  = document.getElementById('searchInput');
-const continentSel = document.getElementById('continentFilter');
-const typeSel      = document.getElementById('typeFilter');
-const countEl      = document.getElementById('filterCount');
-const backdrop     = document.getElementById('modalBackdrop');
-const modalClose   = document.getElementById('modalClose');
+function initializeDestinationExplorer() {
+  let destGrid = document.getElementById('destGrid');
+  let searchField = document.getElementById('searchInput');
+  let continentFilter = document.getElementById('continentFilter');
+  let typeFilter = document.getElementById('typeFilter');
+  let resultCount = document.getElementById('filterCount');
+  let backdrop = document.getElementById('modalBackdrop');
+  let modalClose = document.getElementById('modalClose');
 
-/* ── Render cards ──────────────────────────────────────────── */
-function renderCards(list) {
-  grid.innerHTML = '';
-
-  if (list.length === 0) {
-    grid.innerHTML = `
-      <div class="dest-empty">
-        <span class="empty-icon">🔍</span>
-        <h3>No destinations found</h3>
-        <p>Try adjusting your search or filters.</p>
-      </div>`;
-    countEl.textContent = '0 results';
+  if (!destGrid || !searchField || !continentFilter || !typeFilter || !resultCount || !backdrop || !modalClose) {
     return;
   }
 
-  countEl.textContent = `${list.length} destination${list.length !== 1 ? 's' : ''}`;
+  function sumArray(values) {
+    let total = 0;
+    for (let i = 0; i < values.length; i += 1) {
+      total += values[i];
+    }
+    return total;
+  }
 
-  list.forEach(dest => {
-    const card = document.createElement('div');
-    card.className = 'dest-card';
-    card.setAttribute('role', 'listitem');
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('aria-label', `${dest.name}, ${dest.country}`);
+  function createTagsHtml(tags) {
+    let html = '';
+    for (let i = 0; i < tags.length; i += 1) {
+      html += '<span class="dest-tag">' + tags[i] + '</span>';
+    }
+    return html;
+  }
 
-    card.innerHTML = `
-      <div class="dest-card-img" style="background-image:url('${dest.image}')">
-        <span class="dest-card-continent">${dest.continent}</span>
-      </div>
-      <div class="dest-card-body">
-        <h3>${dest.name}</h3>
-        <p class="dest-country">📍 ${dest.country}</p>
-        <p class="dest-excerpt">${dest.description}</p>
-        <div class="dest-tags">
-          ${dest.travelTypes.map(t => `<span class="dest-tag">${t}</span>`).join('')}
-        </div>
-      </div>`;
+  function renderCards(destinations) {
+    destGrid.innerHTML = '';
 
-    card.addEventListener('click', () => openModal(dest));
-    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(dest); });
-    grid.appendChild(card);
+    if (destinations.length === 0) {
+      destGrid.innerHTML =
+        '<div class="dest-empty">' +
+        '<span class="empty-icon">🔍</span>' +
+        '<h3>No destinations found</h3>' +
+        '<p>Try adjusting your search or filters.</p>' +
+        '</div>';
+      resultCount.textContent = '0 results';
+      return;
+    }
+
+    let countText = destinations.length + ' destination';
+    if (destinations.length !== 1) {
+      countText += 's';
+    }
+    resultCount.textContent = countText;
+
+    for (let i = 0; i < destinations.length; i += 1) {
+      let destination = destinations[i];
+      let card = document.createElement('div');
+      card.className = 'dest-card';
+      card.setAttribute('role', 'listitem');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-label', destination.name + ', ' + destination.country);
+
+      card.innerHTML =
+        '<div class="dest-card-img" style="background-image:url(\'' + destination.image + '\')">' +
+        '<span class="dest-card-continent">' + destination.continent + '</span>' +
+        '</div>' +
+        '<div class="dest-card-body">' +
+        '<h3>' + destination.name + '</h3>' +
+        '<p class="dest-country">📍 ' + destination.country + '</p>' +
+        '<p class="dest-excerpt">' + destination.description + '</p>' +
+        '<div class="dest-tags">' + createTagsHtml(destination.travelTypes) + '</div>' +
+        '</div>';
+
+      card.addEventListener('click', makeCardClickHandler(destination));
+      card.addEventListener('keydown', makeCardKeyHandler(destination));
+      destGrid.appendChild(card);
+    }
+  }
+
+  function makeCardClickHandler(destination) {
+    return function () {
+      openModal(destination);
+    };
+  }
+
+  function makeCardKeyHandler(destination) {
+    return function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        openModal(destination);
+      }
+    };
+  }
+
+  function openModal(dest) {
+    document.getElementById('modalTitle').textContent = dest.name + ', ' + dest.country;
+    let modalImg = document.getElementById('modalImg');
+    modalImg.style.backgroundImage = 'url(\'' + dest.image + '\')';
+    modalImg.setAttribute('aria-label', 'Photo of ' + dest.name);
+    document.getElementById('modalDesc').textContent = dest.description;
+
+    let metaEl = document.getElementById('modalMeta');
+    let metaHtml = '<span class="meta-tag">' + dest.continent + '</span>';
+    for (let i = 0; i < dest.travelTypes.length; i += 1) {
+      metaHtml += '<span class="meta-tag">' + dest.travelTypes[i] + '</span>';
+    }
+    metaEl.innerHTML = metaHtml;
+
+    let attrEl = document.getElementById('modalAttractions');
+    let attractionsHtml = '';
+    for (let j = 0; j < dest.attractions.length; j += 1) {
+      attractionsHtml += '<li>' + dest.attractions[j] + '</li>';
+    }
+    attrEl.innerHTML = attractionsHtml;
+
+    let tbody = document.getElementById('modalCostBody');
+    let categories = dest.costs.categories;
+    let budget = dest.costs.budget;
+    let moderate = dest.costs.moderate;
+    let luxury = dest.costs.luxury;
+
+    let rowsHtml = '';
+    for (let k = 0; k < categories.length; k += 1) {
+      rowsHtml +=
+        '<tr>' +
+        '<td>' + categories[k] + '</td>' +
+        '<td class="col-budget">$' + budget[k] + '</td>' +
+        '<td class="col-mod">$' + moderate[k] + '</td>' +
+        '<td class="col-luxury">$' + luxury[k] + '</td>' +
+        '</tr>';
+    }
+
+    rowsHtml +=
+      '<tr>' +
+      '<td>Total /day</td>' +
+      '<td class="col-budget">$' + sumArray(budget) + '</td>' +
+      '<td class="col-mod">$' + sumArray(moderate) + '</td>' +
+      '<td class="col-luxury">$' + sumArray(luxury) + '</td>' +
+      '</tr>';
+
+    tbody.innerHTML = rowsHtml;
+
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    modalClose.focus();
+  }
+
+  function closeModal() {
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function applyFilters() {
+    let searchText = searchField.value.trim().toLowerCase();
+    let selectedContinent = continentFilter.value;
+    let selectedType = typeFilter.value;
+
+    let visibleDestinations = [];
+    for (let i = 0; i < DESTINATIONS.length; i += 1) {
+      let destination = DESTINATIONS[i];
+      let matchesSearch = false;
+      if (searchText === '') {
+        matchesSearch = true;
+      } else {
+        let nameLower = destination.name.toLowerCase();
+        let countryLower = destination.country.toLowerCase();
+        matchesSearch = nameLower.indexOf(searchText) !== -1 || countryLower.indexOf(searchText) !== -1;
+      }
+
+      let matchesContinent = selectedContinent === '' || destination.continent === selectedContinent;
+      let matchesType = selectedType === '' || destination.travelTypes.indexOf(selectedType) !== -1;
+
+      if (matchesSearch && matchesContinent && matchesType) {
+        visibleDestinations.push(destination);
+      }
+    }
+
+    renderCards(visibleDestinations);
+  }
+
+  searchField.addEventListener('input', applyFilters);
+  continentFilter.addEventListener('change', applyFilters);
+  typeFilter.addEventListener('change', applyFilters);
+  modalClose.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function (event) {
+    if (event.target === backdrop) {
+      closeModal();
+    }
   });
-}
-
-/* ── Filter logic ──────────────────────────────────────────── */
-function applyFilters() {
-  const query     = searchInput.value.trim().toLowerCase();
-  const continent = continentSel.value;
-  const type      = typeSel.value;
-
-  const filtered = DESTINATIONS.filter(d => {
-    const matchSearch    = !query || d.name.toLowerCase().includes(query) || d.country.toLowerCase().includes(query);
-    const matchContinent = !continent || d.continent === continent;
-    const matchType      = !type || d.travelTypes.includes(type);
-    return matchSearch && matchContinent && matchType;
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closeModal();
+    }
   });
 
-  renderCards(filtered);
+  renderCards(DESTINATIONS);
 }
 
-searchInput.addEventListener('input', applyFilters);
-continentSel.addEventListener('change', applyFilters);
-typeSel.addEventListener('change', applyFilters);
-
-/* ── Modal ─────────────────────────────────────────────────── */
-function openModal(dest) {
-  document.getElementById('modalTitle').textContent = `${dest.name}, ${dest.country}`;
-  document.getElementById('modalImg').style.backgroundImage = `url('${dest.image}')`;
-  document.getElementById('modalImg').setAttribute('aria-label', `Photo of ${dest.name}`);
-  document.getElementById('modalDesc').textContent = dest.description;
-
-  // Meta tags
-  const metaEl = document.getElementById('modalMeta');
-  metaEl.innerHTML = [
-    dest.continent,
-    ...dest.travelTypes,
-  ].map(t => `<span class="meta-tag">${t}</span>`).join('');
-
-  // Attractions
-  const attrEl = document.getElementById('modalAttractions');
-  attrEl.innerHTML = dest.attractions
-    .map(a => `<li>${a}</li>`)
-    .join('');
-
-  // Cost table body
-  const tbody = document.getElementById('modalCostBody');
-  const { categories, budget, moderate, luxury } = dest.costs;
-
-  const rows = categories.map((cat, i) => `
-    <tr>
-      <td>${cat}</td>
-      <td class="col-budget">$${budget[i]}</td>
-      <td class="col-mod">$${moderate[i]}</td>
-      <td class="col-luxury">$${luxury[i]}</td>
-    </tr>`).join('');
-
-  // Totals row
-  const sum = arr => arr.reduce((a, b) => a + b, 0);
-  const totalsRow = `
-    <tr>
-      <td>Total /day</td>
-      <td class="col-budget">$${sum(budget)}</td>
-      <td class="col-mod">$${sum(moderate)}</td>
-      <td class="col-luxury">$${sum(luxury)}</td>
-    </tr>`;
-
-  tbody.innerHTML = rows + totalsRow;
-
-  // Open
-  backdrop.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  modalClose.focus();
-}
-
-function closeModal() {
-  backdrop.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-modalClose.addEventListener('click', closeModal);
-backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-/* ── Init ──────────────────────────────────────────────────── */
-renderCards(DESTINATIONS);
+window.addEventListener('DOMContentLoaded', initializeDestinationExplorer);
