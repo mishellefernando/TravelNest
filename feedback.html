@@ -5,16 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="TravelNest – Share your feedback and explore our FAQ" />
   <meta name="theme-color" content="#1a6b5e" />
-  <title>Feedback – TravelNest</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
+  <title>Feedback - TravelNest</title>
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/feedback.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <header class="navbar" id="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
@@ -134,8 +133,55 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer-simple">
-    <p><a href="index.html">TravelNest</a> &nbsp;·&nbsp; © <span id="year"></span> All rights reserved.</p>
+  <footer class="footer" id="contact">
+    <div class="footer-top">
+      <div class="newsletter">
+        <h2>Stay Inspired</h2>
+        <p>Get weekly travel ideas, exclusive deals, and destination guides.</p>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <div class="newsletter-input-wrap">
+            <input
+              type="email"
+              id="emailInput"
+              name="email"
+              placeholder="your@email.com"
+              autocomplete="email"
+              required
+              aria-label="Email address"
+            />
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </div>
+          <p class="newsletter-msg" id="newsletterMsg" role="alert" aria-live="polite"></p>
+          <p class="newsletter-count" id="subscriberCount"></p>
+        </form>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#destinations">Destinations</a>
+          <a href="#experiences">Experiences</a>
+          <a href="#deals">Deals</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#about">About Us</a>
+          <a href="#contact">Contact</a>
+          <a href="#">Careers</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-logo"><span>✈</span> TravelNest</p>
+      <p class="footer-copy">© <span id="year"></span> TravelNest. All rights reserved.</p>
+    </div>
   </footer>
 
   <script src="js/nav.js"></script>

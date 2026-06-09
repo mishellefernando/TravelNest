@@ -1,7 +1,3 @@
-/* ============================================================
-   TravelNest – Destination Explorer
-   Depends on: data.js (DESTINATIONS constant)
-   ============================================================ */
 'use strict';
 
 function initializeDestinationExplorer() {
